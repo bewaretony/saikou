@@ -1,0 +1,13 @@
+[package]
+name = "saikou"
+version = "0.1.0"
+authors = ["bewaretony <eric@gloriouswill.com>"]
+build = "build.rs"
+
+[dependencies]
+
+[build-dependencies]
+hyper = "0.11.25"
+tokio-core = "0.1.17"
+futures = "0.1"
+hyper-tls = "0.1.3"
