@@ -3,6 +3,9 @@ name = "saikou"
 version = "0.1.0"
 authors = ["bewaretony <eric@gloriouswill.com>"]
 build = "build.rs"
+description = "Partial reimplementation of saikou from NPM"
+repository = "https://github.com/bewaretony/saikou"
+license-file = "LICENSE"
 
 [dependencies]
 lazy_static = "1.0.0"
