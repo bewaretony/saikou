@@ -1,10 +1,11 @@
 [package]
 name = "saikou"
-version = "0.1.0"
-authors = ["bewaretony <eric@gloriouswill.com>"]
+version = "0.1.1"
+authors = ["vpzomtrrfrt <vpzomtrrfrt@gmail.com>"]
 build = "build.rs"
 description = "Partial reimplementation of saikou from NPM"
-repository = "https://github.com/bewaretony/saikou"
+repository = "https://github.com/vpzomtrrfrt/saikou-rs"
+license = "MIT"
 license-file = "LICENSE"
 
 [dependencies]
