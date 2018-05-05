@@ -5,9 +5,11 @@ authors = ["bewaretony <eric@gloriouswill.com>"]
 build = "build.rs"
 
 [dependencies]
+lazy_static = "1.0.0"
 
 [build-dependencies]
 hyper = "0.11.25"
 tokio-core = "0.1.17"
 futures = "0.1"
 hyper-tls = "0.1.3"
+scraper = "0.6.0"

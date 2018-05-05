@@ -2,6 +2,7 @@ extern crate futures;
 extern crate hyper;
 extern crate hyper_tls;
 extern crate tokio_core;
+extern crate scraper;
 
 use futures::future::Future;
 use futures::stream::Stream;
@@ -10,14 +11,19 @@ use std::io::Write;
 
 fn fetch<C: hyper::client::Connect>(client: &hyper::Client<C>, url: &str) -> Box<Future<Item=Vec<String>,Error=()>> {
     let url: hyper::Uri = url.parse().unwrap();
-    Box::new(client.get(url.clone()).map(move |res| {
+    Box::new(client.get(url.clone()).and_then(move |res| {
         if res.status() != hyper::StatusCode::Ok {
             panic!("Failed to load {}", url);
         }
         res.body().concat2()
     })
-    .map(|body| {
-        vec!["test".to_owned()]
+    .and_then(|body| {
+        let dom = scraper::Html::parse_fragment(&String::from_utf8(body.to_vec()).unwrap());
+        let selector = scraper::Selector::parse(".navbox-list a").unwrap();
+
+        Ok(dom.select(&selector).map(|e| {
+            e.inner_html()
+        }).collect())
     }).map_err(|e| panic!("{:?}", e)))
 }
 
@@ -40,10 +46,10 @@ fn main() {
             let content = result.map(|x| format!("r#\"{}\"#", x))
                 .collect::<Vec<_>>()
                 .join(",\n        ");
-            let content = format!("lazy_static! {{
-    pub static ref MEMES: Vec<&'static str> = {{
+            let content = format!("pub fn get_memes() -> Vec<&'static str> {{
+    vec![
         {}
-    }}
+    ]
 }}", content);
             let out_dir = std::env::var("OUT_DIR").unwrap();
             let path = std::path::Path::new(&out_dir).join("memes.rs");
